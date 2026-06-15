@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import type { SessionMessage } from "@/types";
+import { MarkdownRenderer } from "./MarkdownRenderer";
 import {
   formatTimestamp,
   getRoleLabel,
@@ -86,10 +87,14 @@ export const SessionMessageItem = memo(function SessionMessageItem({
           </span>
         )}
       </div>
-      <div className="whitespace-pre-wrap break-words [overflow-wrap:anywhere] text-sm leading-relaxed min-w-0">
-        {searchQuery
-          ? highlightText(displayContent, searchQuery)
-          : displayContent}
+      <div className="min-w-0">
+        {searchQuery ? (
+          <div className="whitespace-pre-wrap break-words [overflow-wrap:anywhere] text-sm leading-relaxed">
+            {highlightText(displayContent, searchQuery)}
+          </div>
+        ) : (
+          <MarkdownRenderer content={displayContent} />
+        )}
       </div>
       {isLong && !hasSearchMatch && (
         <button
