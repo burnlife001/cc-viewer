@@ -103,9 +103,21 @@ export function SessionManagerPage() {
 
   const messages = useMemo(() => {
     if (!hideTools) return rawMessages;
-    return rawMessages.filter(
-      (m) => m.role.toLowerCase() !== "tool",
-    );
+    return rawMessages.filter((m) => {
+      const role = m.role.toLowerCase();
+      // tool_result messages reclassified as "tool"
+      if (role === "tool") return false;
+      // pure tool_use: assistant messages that only contain [Tool: ...] lines
+      if (role === "assistant") {
+        const trimmed = m.content.trim();
+        // every non-empty line is a [Tool: ...] marker → pure tool call
+        const lines = trimmed.split("\n").filter((l) => l.trim());
+        if (lines.length > 0 && lines.every((l) => /^\[Tool:/.test(l.trim()))) {
+          return false;
+        }
+      }
+      return true;
+    });
   }, [rawMessages, hideTools]);
 
   const virtualizer = useVirtualizer({
