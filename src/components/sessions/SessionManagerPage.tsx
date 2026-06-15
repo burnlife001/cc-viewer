@@ -54,7 +54,9 @@ export function SessionManagerPage() {
 
   const [search, setSearch] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [selectedKey, setSelectedKey] = useState<string | null>(null);
+  const [selectedKey, setSelectedKey] = useState<string | null>(() => {
+    return localStorage.getItem("cc-viewer-selectedSession");
+  });
   const [activeMessageIndex, setActiveMessageIndex] = useState<number | null>(null);
   const [tocDialogOpen, setTocDialogOpen] = useState(false);
   const [hideTools, setHideTools] = useState(() => {
@@ -64,6 +66,13 @@ export function SessionManagerPage() {
     return localStorage.getItem("cc-viewer-hideShortAI") !== "false";
   });
 
+  useEffect(() => {
+    if (selectedKey) {
+      localStorage.setItem("cc-viewer-selectedSession", selectedKey);
+    } else {
+      localStorage.removeItem("cc-viewer-selectedSession");
+    }
+  }, [selectedKey]);
   useEffect(() => {
     localStorage.setItem("cc-viewer-hideTools", String(hideTools));
   }, [hideTools]);
@@ -79,10 +88,7 @@ export function SessionManagerPage() {
 
   // Auto-select first session when list changes
   useEffect(() => {
-    if (filteredSessions.length === 0) {
-      setSelectedKey(null);
-      return;
-    }
+    if (filteredSessions.length === 0) return; // keep selectedKey as-is (loading, etc.)
     const exists = selectedKey
       ? filteredSessions.some(
           (session) => getSessionKey(session) === selectedKey,
