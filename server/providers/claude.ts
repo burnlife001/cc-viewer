@@ -116,7 +116,7 @@ export function loadMessages(filePath: string): SessionMessage[] {
       }
     }
 
-    const textContent = extractText(message.content);
+    const textContent = cleanContent(extractText(message.content));
     if (!textContent.trim()) continue;
 
     const ts = parseTimestampToMs(value.timestamp);
@@ -167,12 +167,8 @@ function parseSession(filePath: string): SessionMeta | null {
       const isUser =
         value.type === "user" || value.message?.role === "user";
       if (isUser && value.message) {
-        const text = extractText(value.message.content).trim();
-        if (
-          text &&
-          !text.includes("<local-command-caveat>") &&
-          !text.startsWith("<command-name>")
-        ) {
+        const text = cleanContent(extractText(value.message.content));
+        if (text) {
           firstUserMessage = text;
         }
       }
@@ -338,6 +334,29 @@ function extractText(content: any): string {
     })
     .filter((t: string | null): t is string => t !== null && t.trim().length > 0)
     .join("\n");
+}
+
+// System-injected XML tags that pollute session content.
+// These come from Claude Code harness, not from the user or AI.
+const SYSTEM_TAGS = [
+  "system-reminder",
+  "local-command-caveat",
+  "command-name",
+  "command-message",
+  "command-args",
+  "local-command-stdout",
+  "ide_selection",
+  "ide_opened_file",
+  "persisted-output",
+];
+
+const SYSTEM_TAG_RE = new RegExp(
+  SYSTEM_TAGS.map((t) => `<${t}[^>]*>[\\s\\S]*?<\\/${t}>`).join("|"),
+  "gi",
+);
+
+function cleanContent(text: string): string {
+  return text.replace(SYSTEM_TAG_RE, "").trim();
 }
 
 function truncateSummary(text: string, maxChars: number): string {
