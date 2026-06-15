@@ -1,0 +1,11 @@
+[
+  "system-reminder",
+  "local-command-caveat",
+  "command-name",
+  "command-message",
+  "command-args",
+  "local-command-stdout",
+  "ide_selection",
+  "ide_opened_file",
+  "persisted-output"
+]

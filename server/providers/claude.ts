@@ -1,6 +1,12 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const systemTags: string[] = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "..", "system-tags.json"), "utf-8"),
+);
 
 const PROVIDER_ID = "claude";
 const TITLE_MAX_CHARS = 80;
@@ -336,22 +342,9 @@ function extractText(content: any): string {
     .join("\n");
 }
 
-// System-injected XML tags that pollute session content.
-// These come from Claude Code harness, not from the user or AI.
-const SYSTEM_TAGS = [
-  "system-reminder",
-  "local-command-caveat",
-  "command-name",
-  "command-message",
-  "command-args",
-  "local-command-stdout",
-  "ide_selection",
-  "ide_opened_file",
-  "persisted-output",
-];
-
+// System-injected XML tags — edit server/system-tags.json to add/remove.
 const SYSTEM_TAG_RE = new RegExp(
-  SYSTEM_TAGS.map((t) => `<${t}[^>]*>[\\s\\S]*?<\\/${t}>`).join("|"),
+  systemTags.map((t) => `<${t}[^>]*>[\\s\\S]*?<\\/${t}>`).join("|"),
   "gi",
 );
 
