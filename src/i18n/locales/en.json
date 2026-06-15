@@ -36,6 +36,7 @@
     "folderOpened": "Folder opened",
     "openFolderFailed": "Failed to open folder",
     "clickToCopyPath": "Click to copy path",
-    "projectDirCopied": "Directory path copied"
+    "projectDirCopied": "Directory path copied",
+    "hideTools": "Hide tools"
   }
 }

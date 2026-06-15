@@ -24,6 +24,7 @@ import type { SessionMeta } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -64,6 +65,7 @@ export function SessionManagerPage() {
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [activeMessageIndex, setActiveMessageIndex] = useState<number | null>(null);
   const [tocDialogOpen, setTocDialogOpen] = useState(false);
+  const [hideTools, setHideTools] = useState(false);
 
   const { search: searchSessions } = useSessionSearch(sessions);
 
@@ -96,8 +98,15 @@ export function SessionManagerPage() {
     );
   }, [filteredSessions, selectedKey]);
 
-  const { data: messages = [], isLoading: isLoadingMessages } =
+  const { data: rawMessages = [], isLoading: isLoadingMessages } =
     useSessionMessagesQuery(selectedSession?.sourcePath);
+
+  const messages = useMemo(() => {
+    if (!hideTools) return rawMessages;
+    return rawMessages.filter(
+      (m) => m.role.toLowerCase() !== "tool",
+    );
+  }, [rawMessages, hideTools]);
 
   const virtualizer = useVirtualizer({
     count: messages.length,
@@ -506,6 +515,19 @@ export function SessionManagerPage() {
                             <Badge variant="secondary" className="text-xs">
                               {messages.length}
                             </Badge>
+                            <div className="flex-1" />
+                            <label className="flex items-center gap-1.5 cursor-pointer select-none">
+                              <Checkbox
+                                checked={hideTools}
+                                onCheckedChange={(v) => setHideTools(Boolean(v))}
+                                className="size-3.5"
+                              />
+                              <span className="text-xs text-muted-foreground">
+                                {t("sessionManager.hideTools", {
+                                  defaultValue: "Hide tools",
+                                })}
+                              </span>
+                            </label>
                           </div>
                         </div>
                         <div
