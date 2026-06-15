@@ -14,8 +14,6 @@ import {
   Sun,
   Clock,
   X,
-  FileJson,
-  FileText,
 } from "lucide-react";
 import { useSessionMessagesQuery, useSessionsQuery } from "@/hooks/useSessions";
 import { useTheme } from "@/hooks/useTheme";
@@ -33,12 +31,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { extractErrorMessage } from "@/utils/errorUtils";
 import { SessionItem } from "./SessionItem";
 import { SessionMessageItem } from "./SessionMessageItem";
@@ -194,12 +186,6 @@ export function SessionManagerPage() {
     },
     [handleCopy, t],
   );
-
-  const handleExportJSONL = useCallback(() => {
-    if (!selectedSession?.sourcePath) return;
-    const url = sessionsApi.getExportUrl(selectedSession.sourcePath);
-    window.open(url, "_blank");
-  }, [selectedSession]);
 
   const handleOpenFolder = useCallback(async () => {
     if (!selectedSession?.sourcePath) return;
@@ -453,50 +439,35 @@ export function SessionManagerPage() {
 
                       {/* Right: action buttons */}
                       <div className="flex items-center gap-2 shrink-0">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button size="sm" variant="outline" className="gap-1.5">
-                              <Download className="size-3.5" />
-                              <span className="hidden sm:inline">
-                                {t("sessionManager.export", {
-                                  defaultValue: "Export",
-                                })}
-                              </span>
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={handleExportJSONL}>
-                              <FileJson className="size-3.5 mr-2" />
-                              {t("sessionManager.exportJSONL", {
-                                defaultValue: "Download JSONL",
-                              })}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() => {
-                                if (!selectedSession) return;
-                                const markdown = convertToMarkdown(
-                                  formatSessionTitle(selectedSession),
-                                  messages,
-                                );
-                                downloadFile(
-                                  markdown,
-                                  `${formatSessionTitle(selectedSession)}.md`,
-                                  "text/markdown",
-                                );
-                                toast.success(
-                                  t("sessionManager.exportSuccess", {
-                                    defaultValue: "Markdown exported",
-                                  }),
-                                );
-                              }}
-                            >
-                              <FileText className="size-3.5 mr-2" />
-                              {t("sessionManager.exportMarkdown", {
-                                defaultValue: "Export Markdown",
-                              })}
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="gap-1.5"
+                          onClick={() => {
+                            if (!selectedSession) return;
+                            const markdown = convertToMarkdown(
+                              formatSessionTitle(selectedSession),
+                              messages,
+                            );
+                            downloadFile(
+                              markdown,
+                              `${formatSessionTitle(selectedSession)}.md`,
+                              "text/markdown",
+                            );
+                            toast.success(
+                              t("sessionManager.exportSuccess", {
+                                defaultValue: "Markdown exported",
+                              }),
+                            );
+                          }}
+                        >
+                          <Download className="size-3.5" />
+                          <span className="hidden sm:inline">
+                            {t("sessionManager.export", {
+                              defaultValue: "Export",
+                            })}
+                          </span>
+                        </Button>
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <Button
