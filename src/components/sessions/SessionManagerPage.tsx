@@ -58,10 +58,10 @@ export function SessionManagerPage() {
   const [activeMessageIndex, setActiveMessageIndex] = useState<number | null>(null);
   const [tocDialogOpen, setTocDialogOpen] = useState(false);
   const [hideTools, setHideTools] = useState(() => {
-    return localStorage.getItem("cc-viewer-hideTools") === "true";
+    return localStorage.getItem("cc-viewer-hideTools") !== "false";
   });
   const [hideShortAI, setHideShortAI] = useState(() => {
-    return localStorage.getItem("cc-viewer-hideShortAI") === "true";
+    return localStorage.getItem("cc-viewer-hideShortAI") !== "false";
   });
 
   useEffect(() => {
