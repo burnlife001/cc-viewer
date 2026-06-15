@@ -7,15 +7,18 @@ import {
   Copy,
   Download,
   FolderOpen,
+  Moon,
   RefreshCw,
   Search,
   MessageSquare,
+  Sun,
   Clock,
   X,
   FileJson,
   FileText,
 } from "lucide-react";
 import { useSessionMessagesQuery, useSessionsQuery } from "@/hooks/useSessions";
+import { useTheme } from "@/hooks/useTheme";
 import { sessionsApi } from "@/lib/api";
 import type { SessionMeta } from "@/types";
 import { Button } from "@/components/ui/button";
@@ -50,6 +53,7 @@ import {
 export function SessionManagerPage() {
   const { t } = useTranslation();
   const { data, isLoading, refetch } = useSessionsQuery();
+  const { dark, toggle: toggleTheme } = useTheme();
   const sessions = data ?? [];
   const detailRef = useRef<HTMLDivElement | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
@@ -249,6 +253,25 @@ export function SessionManagerPage() {
                         </TooltipTrigger>
                         <TooltipContent>
                           {t("sessionManager.searchSessions")}
+                        </TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="size-7"
+                            onClick={toggleTheme}
+                          >
+                            {dark ? (
+                              <Sun className="size-3.5" />
+                            ) : (
+                              <Moon className="size-3.5" />
+                            )}
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          {dark ? "Light mode" : "Dark mode"}
                         </TooltipContent>
                       </Tooltip>
                       <Tooltip>
