@@ -473,30 +473,21 @@ export function SessionManagerPage() {
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               onClick={() => {
-                                if (!selectedSession?.sourcePath) return;
-                                const url = sessionsApi.getExportUrl(
-                                  selectedSession.sourcePath,
+                                if (!selectedSession) return;
+                                const markdown = convertToMarkdown(
+                                  formatSessionTitle(selectedSession),
+                                  messages,
                                 );
-                                fetch(url)
-                                  .then((r) => r.json())
-                                  .then((messages) => {
-                                    const markdown = convertToMarkdown(
-                                      formatSessionTitle(selectedSession),
-                                      messages,
-                                    );
-                                    downloadFile(
-                                      markdown,
-                                      `${formatSessionTitle(selectedSession)}.md`,
-                                      "text/markdown",
-                                    );
-                                  })
-                                  .catch(() =>
-                                    toast.error(
-                                      t("sessionManager.exportFailed", {
-                                        defaultValue: "Export failed",
-                                      }),
-                                    ),
-                                  );
+                                downloadFile(
+                                  markdown,
+                                  `${formatSessionTitle(selectedSession)}.md`,
+                                  "text/markdown",
+                                );
+                                toast.success(
+                                  t("sessionManager.exportSuccess", {
+                                    defaultValue: "Markdown exported",
+                                  }),
+                                );
                               }}
                             >
                               <FileText className="size-3.5 mr-2" />

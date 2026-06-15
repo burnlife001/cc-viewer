@@ -31,6 +31,7 @@
     "export": "Export",
     "exportJSONL": "Download JSONL",
     "exportMarkdown": "Export Markdown",
+    "exportSuccess": "Markdown exported",
     "exportFailed": "Export failed",
     "openFolder": "Open in folder",
     "folderOpened": "Folder opened",

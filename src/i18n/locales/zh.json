@@ -31,6 +31,7 @@
     "export": "导出",
     "exportJSONL": "下载 JSONL",
     "exportMarkdown": "导出 Markdown",
+    "exportSuccess": "Markdown 已导出",
     "exportFailed": "导出失败",
     "openFolder": "打开文件夹",
     "folderOpened": "文件夹已打开",
