@@ -28,7 +28,7 @@
     "tocTitle": "Table of Contents",
     "expandContent": "Show full content",
     "collapseContent": "Collapse",
-    "export": "Export",
+    "export": "Export .md",
     "exportJSONL": "Download JSONL",
     "exportMarkdown": "Export Markdown",
     "exportSuccess": "Markdown exported",

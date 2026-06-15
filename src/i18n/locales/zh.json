@@ -28,7 +28,7 @@
     "tocTitle": "对话目录",
     "expandContent": "展开完整内容",
     "collapseContent": "收起",
-    "export": "导出",
+    "export": "导出.md",
     "exportJSONL": "下载 JSONL",
     "exportMarkdown": "导出 Markdown",
     "exportSuccess": "Markdown 已导出",

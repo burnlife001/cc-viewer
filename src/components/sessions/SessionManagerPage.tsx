@@ -464,7 +464,7 @@ export function SessionManagerPage() {
                           <Download className="size-3.5" />
                           <span className="hidden sm:inline">
                             {t("sessionManager.export", {
-                              defaultValue: "Export",
+                              defaultValue: "Export .md",
                             })}
                           </span>
                         </Button>
