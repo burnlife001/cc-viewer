@@ -65,8 +65,19 @@ export function SessionManagerPage() {
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [activeMessageIndex, setActiveMessageIndex] = useState<number | null>(null);
   const [tocDialogOpen, setTocDialogOpen] = useState(false);
-  const [hideTools, setHideTools] = useState(false);
-  const [hideShortAI, setHideShortAI] = useState(false);
+  const [hideTools, setHideTools] = useState(() => {
+    return localStorage.getItem("cc-viewer-hideTools") === "true";
+  });
+  const [hideShortAI, setHideShortAI] = useState(() => {
+    return localStorage.getItem("cc-viewer-hideShortAI") === "true";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("cc-viewer-hideTools", String(hideTools));
+  }, [hideTools]);
+  useEffect(() => {
+    localStorage.setItem("cc-viewer-hideShortAI", String(hideShortAI));
+  }, [hideShortAI]);
 
   const { search: searchSessions } = useSessionSearch(sessions);
 
