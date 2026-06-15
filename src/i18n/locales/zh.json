@@ -37,6 +37,7 @@
     "openFolderFailed": "打开文件夹失败",
     "clickToCopyPath": "点击复制路径",
     "projectDirCopied": "目录已复制",
+    "hideShortAI": "过滤AI仅一句",
     "hideTools": "隐藏工具调用"
   }
 }

@@ -66,6 +66,7 @@ export function SessionManagerPage() {
   const [activeMessageIndex, setActiveMessageIndex] = useState<number | null>(null);
   const [tocDialogOpen, setTocDialogOpen] = useState(false);
   const [hideTools, setHideTools] = useState(false);
+  const [hideShortAI, setHideShortAI] = useState(false);
 
   const { search: searchSessions } = useSessionSearch(sessions);
 
@@ -102,23 +103,27 @@ export function SessionManagerPage() {
     useSessionMessagesQuery(selectedSession?.sourcePath);
 
   const messages = useMemo(() => {
-    if (!hideTools) return rawMessages;
     return rawMessages.filter((m) => {
       const role = m.role.toLowerCase();
-      // tool_result messages reclassified as "tool"
-      if (role === "tool") return false;
-      // pure tool_use: assistant messages that only contain [Tool: ...] lines
-      if (role === "assistant") {
-        const trimmed = m.content.trim();
-        // every non-empty line is a [Tool: ...] marker → pure tool call
-        const lines = trimmed.split("\n").filter((l) => l.trim());
-        if (lines.length > 0 && lines.every((l) => /^\[Tool:/.test(l.trim()))) {
-          return false;
+      // hideTools: filter tool messages
+      if (hideTools) {
+        if (role === "tool") return false;
+        if (role === "assistant") {
+          const trimmed = m.content.trim();
+          const lines = trimmed.split("\n").filter((l) => l.trim());
+          if (lines.length > 0 && lines.every((l) => /^\[Tool:/.test(l.trim()))) {
+            return false;
+          }
         }
+      }
+      // hideShortAI: filter single-line assistant messages
+      if (hideShortAI && role === "assistant") {
+        const trimmed = m.content.trim();
+        if (!trimmed.includes("\n")) return false;
       }
       return true;
     });
-  }, [rawMessages, hideTools]);
+  }, [rawMessages, hideTools, hideShortAI]);
 
   const virtualizer = useVirtualizer({
     count: messages.length,
@@ -528,6 +533,18 @@ export function SessionManagerPage() {
                               {messages.length}
                             </Badge>
                             <div className="flex-1" />
+                            <label className="flex items-center gap-1.5 cursor-pointer select-none">
+                              <Checkbox
+                                checked={hideShortAI}
+                                onCheckedChange={(v) => setHideShortAI(Boolean(v))}
+                                className="size-3.5"
+                              />
+                              <span className="text-xs text-muted-foreground">
+                                {t("sessionManager.hideShortAI", {
+                                  defaultValue: "Skip one-liners",
+                                })}
+                              </span>
+                            </label>
                             <label className="flex items-center gap-1.5 cursor-pointer select-none">
                               <Checkbox
                                 checked={hideTools}

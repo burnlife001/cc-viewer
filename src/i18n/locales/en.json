@@ -37,6 +37,7 @@
     "openFolderFailed": "Failed to open folder",
     "clickToCopyPath": "Click to copy path",
     "projectDirCopied": "Directory path copied",
+    "hideShortAI": "Skip one-liners",
     "hideTools": "Hide tools"
   }
 }
