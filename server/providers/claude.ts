@@ -28,15 +28,33 @@ interface SessionMessage {
 // ---- Config Directory ----
 
 function getClaudeConfigDir(): string {
-  // Per-platform Claude config directory
-  switch (process.platform) {
-    case "darwin":
-      return path.join(os.homedir(), "Library", "Application Support", "Claude");
-    case "win32":
-      return path.join(process.env.APPDATA || path.join(os.homedir(), "AppData", "Roaming"), "Claude");
-    default:
-      return path.join(os.homedir(), ".claude");
+  // Claude Code CLI uses ~/.claude on all platforms
+  const primary = path.join(os.homedir(), ".claude");
+
+  // Also try platform-specific paths
+  const candidates = [primary];
+  if (process.platform === "darwin") {
+    candidates.push(
+      path.join(os.homedir(), "Library", "Application Support", "Claude"),
+    );
+  } else if (process.platform === "win32") {
+    candidates.push(
+      path.join(
+        process.env.APPDATA || path.join(os.homedir(), "AppData", "Roaming"),
+        "Claude",
+      ),
+    );
   }
+
+  // Return the first directory that exists (with projects subdir), or the primary
+  for (const dir of candidates) {
+    const projectsDir = path.join(dir, "projects");
+    if (fs.existsSync(projectsDir)) {
+      return dir;
+    }
+  }
+
+  return primary;
 }
 
 // ---- Session Scanning ----
