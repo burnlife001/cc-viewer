@@ -1,0 +1,41 @@
+{
+  "common": {
+    "refresh": "刷新",
+    "cancel": "取消",
+    "unknown": "未知",
+    "close": "关闭",
+    "copyFailed": "复制失败"
+  },
+  "sessionManager": {
+    "sessionList": "会话列表",
+    "searchPlaceholder": "搜索会话内容、目录或 ID",
+    "searchSessions": "搜索会话",
+    "noSessions": "未发现会话",
+    "selectSession": "请选择会话查看详情",
+    "justNow": "刚刚",
+    "minutesAgo": "{{count}} 分钟前",
+    "hoursAgo": "{{count}} 小时前",
+    "daysAgo": "{{count}} 天前",
+    "roleUser": "用户",
+    "roleSystem": "系统",
+    "roleTool": "工具",
+    "resumeCommandCopied": "恢复命令已复制",
+    "copyCommand": "复制命令",
+    "copyMessage": "复制消息",
+    "messageCopied": "已复制消息内容",
+    "conversationHistory": "对话记录",
+    "emptySession": "该会话暂无可展示内容",
+    "tocTitle": "对话目录",
+    "expandContent": "展开完整内容",
+    "collapseContent": "收起",
+    "export": "导出",
+    "exportJSONL": "下载 JSONL",
+    "exportMarkdown": "导出 Markdown",
+    "exportFailed": "导出失败",
+    "openFolder": "打开文件夹",
+    "folderOpened": "文件夹已打开",
+    "openFolderFailed": "打开文件夹失败",
+    "clickToCopyPath": "点击复制路径",
+    "projectDirCopied": "目录已复制"
+  }
+}

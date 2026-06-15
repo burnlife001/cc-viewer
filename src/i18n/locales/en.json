@@ -1,0 +1,41 @@
+{
+  "common": {
+    "refresh": "Refresh",
+    "cancel": "Cancel",
+    "unknown": "Unknown",
+    "close": "Close",
+    "copyFailed": "Copy failed"
+  },
+  "sessionManager": {
+    "sessionList": "Sessions",
+    "searchPlaceholder": "Search sessions...",
+    "searchSessions": "Search sessions",
+    "noSessions": "No sessions found",
+    "selectSession": "Select a session to view",
+    "justNow": "just now",
+    "minutesAgo": "{{count}} min ago",
+    "hoursAgo": "{{count}} hr ago",
+    "daysAgo": "{{count}} days ago",
+    "roleUser": "User",
+    "roleSystem": "System",
+    "roleTool": "Tool",
+    "resumeCommandCopied": "Resume command copied",
+    "copyCommand": "Copy command",
+    "copyMessage": "Copy message",
+    "messageCopied": "Message copied",
+    "conversationHistory": "Conversation",
+    "emptySession": "No messages in this session",
+    "tocTitle": "Table of Contents",
+    "expandContent": "Show full content",
+    "collapseContent": "Collapse",
+    "export": "Export",
+    "exportJSONL": "Download JSONL",
+    "exportMarkdown": "Export Markdown",
+    "exportFailed": "Export failed",
+    "openFolder": "Open in folder",
+    "folderOpened": "Folder opened",
+    "openFolderFailed": "Failed to open folder",
+    "clickToCopyPath": "Click to copy path",
+    "projectDirCopied": "Directory path copied"
+  }
+}
